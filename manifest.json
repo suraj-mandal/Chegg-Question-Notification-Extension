@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Chegg Auto Refresher",
+  "version": "1.0",
+  "description": "Check whether any question is available",
+  "permissions": ["tabs", "alarms", "notifications", "storage", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
