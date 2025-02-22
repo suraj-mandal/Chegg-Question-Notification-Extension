@@ -1,20 +1,26 @@
 // script to reload the page in the background and check if the question is available or not.
 
 const urlToMonitor = "https://expert.chegg.com/qna/authoring/answer"
-const checkInterval = 180;
+const checkInterval = 30;
 let targetTabId = null;
 
 function checkForQuestions() {
     const questionNotAvailable = document.body.innerText.includes("Unfortunately, no Qs are available in your queue at the moment.");
+    console.log("Question available: " + questionNotAvailable);
     if (!questionNotAvailable) {
         console.log("A question has been found. Notify")
-        chrome.runtime.sendMessage({notify: true})
+        chrome.runtime.sendMessage({notify: true, message: "Questions are available"})
             .then(() => {
                 console.log("Successfully notified");
             })
             .catch(error => console.error(error));
     } else {
         console.log("Not questions available right now");
+        chrome.runtime.sendMessage({notify: false, message: "Not questions available right now"})
+            .then(() => {
+                console.log("Successfully notified");
+            })
+            .catch(error => console.error(error));
     }
 }
 
@@ -71,18 +77,20 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 })
 
 chrome.runtime.onMessage.addListener((message) => {
-    if (message.notify) {
+    if (message.notify === true) {
         chrome.notifications.create({
             type: "basic",
             iconUrl: "./icons/sample.png",
-            title: "Question is Available",
+            title: message.message,
             message: "Please check the website to see which question is available"
         })
             .then(() => {
-                console.log("Successfully created the notification");
+                console.log(message.message);
             })
             .catch((e) => {
                 console.error(e);
             })
+    } else if (message.notify === false) {
+        console.log(message.message);
     }
 })
