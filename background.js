@@ -1,7 +1,7 @@
 // script to reload the page in the background and check if the question is available or not.
 
 const urlToMonitor = "https://expert.chegg.com/qna/authoring/answer"
-const checkInterval = 60;
+const checkInterval = 180;
 let targetTabId = null;
 
 function checkForQuestions() {
