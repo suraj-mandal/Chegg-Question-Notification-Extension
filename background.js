@@ -13,6 +13,8 @@ function checkForQuestions() {
                 console.log("Successfully notified");
             })
             .catch(error => console.error(error));
+    } else {
+        console.log("Not questions available right now");
     }
 }
 
